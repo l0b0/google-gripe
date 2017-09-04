@@ -64,7 +64,10 @@ def delete_all_my_files(service):
         try:
             files = file_handler.list(
                 pageToken=page_token, orderBy='quotaBytesUsed desc', q="'YOUR_EMAIL_ADDRESS_HERE' in owners").execute()
-            for item in files['items']:
+            items = files['items']
+            if not items:
+                break
+            for item in items:
                 file_id = item['id']
                 try:
                     file_handler.delete(fileId=file_id).execute()
